@@ -10,7 +10,7 @@ import MobileFilterDropdowns from "@/components/filters/MobileFilterDropdowns";
 import Map from "@/components/map/Map";
 import { useFiltersStore } from "@/state/filters";
 import { Datasource, Hazard, Rating } from "@/schema/risk";
-
+import Info from "@/components/map/Info";
 export default function Home() {
   const { hazard, datasource, rating } = useFiltersStore();
 
@@ -92,6 +92,8 @@ export default function Home() {
             </Button>
           </div>
         </div>
+
+        <Info />
       </div>
     </>
   );
