@@ -73,6 +73,8 @@ const getValueField = (
     valueField += "_HM";
   }
 
+  console.log(valueField)
+
   return valueField;
 };
 
@@ -97,21 +99,31 @@ const Map = () => {
       (feature) => (feature.properties as any)?.[valueField] ?? 0
     );
 
-    if (rating === Rating.PALR || rating === Rating.PRISK) {
-      const categories = [
-        'Very Low (<55K)',
-        'Relatively Low (55K - 932K)',
-        'Relatively Moderate (932K - 5.96M)',
-        'Relatively High (5.96M - 29.4M)',
-        'Very High (>29.4M)'
-      ];
+    if (rating === Rating.PALR) {
       return d3
-        .scaleOrdinal(d3.schemeOrRd[5])
-        .domain(categories);
+        .scaleOrdinal(d3.schemeOrRd[7])
+        .domain([...new Set(values)].sort());
     }
 
     const extent = d3.extent(values) as [number, number];
     return d3.scaleSequential(d3.interpolateOrRd).domain(extent);
+
+    // if (rating === Rating.PALR) {
+    //   console.log('rating colors here')
+    //   const categories = [
+    //     'Very Low (<55K)',
+    //     'Relatively Low (55K - 932K)',
+    //     'Relatively Moderate (932K - 5.96M)',
+    //     'Relatively High (5.96M - 29.4M)',
+    //     'Very High (>29.4M)'
+    //   ];
+    //   return d3
+    //     .scaleOrdinal(d3.schemeOrRd[5])
+    //     .domain(categories);
+    // }
+
+    // const extent = d3.extent(values) as [number, number];
+    // return d3.scaleSequential(d3.interpolateOrRd).domain(extent);
   }, [data, valueField]);
 
   // Function to style each county
