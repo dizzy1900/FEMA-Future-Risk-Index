@@ -97,10 +97,17 @@ const Map = () => {
       (feature) => (feature.properties as any)?.[valueField] ?? 0
     );
 
-    if (rating === Rating.PALR) {
+    if (rating === Rating.PALR || rating === Rating.PRISK) {
+      const categories = [
+        'Very Low (<55K)',
+        'Relatively Low (55K - 932K)',
+        'Relatively Moderate (932K - 5.96M)',
+        'Relatively High (5.96M - 29.4M)',
+        'Very High (>29.4M)'
+      ];
       return d3
-        .scaleOrdinal(d3.schemeOrRd[7])
-        .domain([...new Set(values)].sort());
+        .scaleOrdinal(d3.schemeOrRd[5])
+        .domain(categories);
     }
 
     const extent = d3.extent(values) as [number, number];
@@ -121,12 +128,12 @@ const Map = () => {
 
     let value = (feature.properties as any)?.[valueField] ?? null;
 
-    if (value === "Not Applicable" || value === "No Rating") {
+    if (value === "Not Applicable") {
       value = null;
     }
 
     return {
-      fillColor: !value ? "#bdbdbd" : colorScale(value),
+      fillColor: !value ? "#bdbdbd" : value != "No Rating" ? colorScale(value) : '#FFFFFF',
       weight: 1,
       opacity: 0.7,
       color: "gray",

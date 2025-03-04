@@ -18,13 +18,13 @@ const Legend = () => {
     legend.onAdd = function () {
       const div = L.DomUtil.create("div", "info legend");
 
-      const numColors = 6; // Use only 6 segments from d3.interpolateOrRd
+      const numColors = 5; // Use only  segments from d3.interpolateOrRd
       const colorScale = d3.interpolateOrRd; // d3 color interpolation
 
       // Define category labels
       const categoryLabels = [
-        "No Data",
-        "No Expected Annual Losses",
+        "Not Applicable",
+        "No Rating",
         "Very Low",
         "Relatively Low",
         "Relatively Moderate",
@@ -32,11 +32,8 @@ const Legend = () => {
         "Very High",
       ];
 
-      // Generate color values for 6 categories
-      const thresholds = Array.from(
-        { length: numColors },
-        (_, i) => i / (numColors - 1)
-      );
+      // Generate color values for 5 categories
+      const thresholds = [0.0, 0.1, 0.25, 0.45, 0.70, 0.9]
 
       // Style the legend container with a white background
       div.style.background = "#FFFFFF";
@@ -51,7 +48,7 @@ const Legend = () => {
       // Generate legend items
       let labels = [];
 
-      // Add "No Data" category manually with gray color
+      // Add "No Applicable" category manually with gray color
       labels.push(
         `<div style="display: flex; align-items: center; margin-bottom: 4px;">
           <div style="width: 20px; height: 20px; background:#B0B0B0; margin-right: 8px; border: 1px solid #999;"></div>
@@ -59,8 +56,16 @@ const Legend = () => {
         </div>`
       );
 
+      // Add "No Rating" category manually with white color
+      labels.push(
+        `<div style="display: flex; align-items: center; margin-bottom: 4px;">
+          <div style="width: 20px; height: 20px; background:#FFFFFF; margin-right: 8px; border: 1px solid #999;"></div>
+          <span>${categoryLabels[1]}</span>
+        </div>`
+      );
+
       // Generate the rest using d3 color scale
-      for (let i = 0; i < numColors; i++) {
+      for (let i = 1; i <= numColors; i++) {
         const color = colorScale(thresholds[i]);
         const label = categoryLabels[i + 1]; // Shift labels to match colors
 
