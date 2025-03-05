@@ -108,7 +108,7 @@ const Legend: React.FC<LegendProps> = ({ rating }) => {
     return () => {
       map.removeControl(legend);
     };
-  }, [map]);
+  }, [map, rating]);
 
   return null;
 };

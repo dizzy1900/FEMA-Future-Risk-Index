@@ -99,15 +99,50 @@ const Map = () => {
     );
 
     if (rating === Rating.PALR) {
-      const categories = [
-        'Very Low (<55K)',
-        'Relatively Low (55K - 932K)',
-        'Relatively Moderate (932K - 5.96M)',
-        'Relatively High (5.96M - 29.4M)',
-        'Very High (>29.4M)'
-      ];
+      let categories: string[];
+      if (hazard === Hazard.DRGT) {
+        categories = [
+          'Very Low (<21.9K)', 
+          'Relatively Low (21.9K - 292K)',
+          'Relatively Moderate (292K - 2.74M)',
+          'Relatively High (2.74M - 25.1M)',
+          'Very High (>25.1M)',
+        ]
+      } else if (hazard === Hazard.CFLD) {
+        categories = [
+          'Very Low (<55K)',
+          'Relatively Low (55K - 932K)',
+          'Relatively Moderate (932K - 5.96M)',
+          'Relatively High (5.96M - 29.4M)',
+          'Very High (>29.4M)'
+        ]
+    } else if (hazard === Hazard.EXHT){
+      categories = [
+        'Very Low (<10.9K)',
+        'Relatively Low (10.9K - 241K)',
+        'Relatively Moderate (241K - 1.87M)',
+        'Relatively High (1.87M - 17.3M)', 
+        'Very High (>17.3M)',
+      ]
+    } else if (hazard === Hazard.HRCN){
+      categories = [
+        'Very Low (<625K)',
+        'Relatively Low (625K - 7.36M)', 
+        'Relatively Moderate (7.36M - 43M)',
+        'Relatively High (43M - 191M)',
+        'Very High (>191M)',
+      ]
+    } else if (hazard === Hazard.WFIR){
+      categories = [
+        'Very Low (<85.9K)',
+        'Relatively Low (85.9K - 842K)', 'No Rating',
+        'Relatively Moderate (842K - 5.88M)',
+        'Relatively High (5.88M - 49.5M)',
+        'Very High (>49.5M)',
+      ]
+    }
       return d3
-        .scaleOrdinal(d3.schemeOrRd[5])
+        .scaleOrdinal(d3.schemeOrRd[categories.length])
         .domain(categories);
     }
     const extent = d3.extent(values) as [number, number];
