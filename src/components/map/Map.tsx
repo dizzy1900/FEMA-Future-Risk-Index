@@ -73,8 +73,6 @@ const getValueField = (
     valueField += "_HM";
   }
 
-  console.log(valueField)
-
   return valueField;
 };
 
@@ -82,6 +80,7 @@ const Map = () => {
   const [hoveredCounty, setHoveredCounty] = useState<string | undefined>();
   const { setSelectedCounty } = useCountyStore();
   const { rating, hazard, scenario, datasource } = useFiltersStore();
+  const rating_legend = useFiltersStore((state) => state.rating);
 
   const { data } = useCounties();
 
@@ -100,30 +99,19 @@ const Map = () => {
     );
 
     if (rating === Rating.PALR) {
+      const categories = [
+        'Very Low (<55K)',
+        'Relatively Low (55K - 932K)',
+        'Relatively Moderate (932K - 5.96M)',
+        'Relatively High (5.96M - 29.4M)',
+        'Very High (>29.4M)'
+      ];
       return d3
-        .scaleOrdinal(d3.schemeOrRd[7])
-        .domain([...new Set(values)].sort());
+        .scaleOrdinal(d3.schemeOrRd[5])
+        .domain(categories);
     }
-
     const extent = d3.extent(values) as [number, number];
     return d3.scaleSequential(d3.interpolateOrRd).domain(extent);
-
-    // if (rating === Rating.PALR) {
-    //   console.log('rating colors here')
-    //   const categories = [
-    //     'Very Low (<55K)',
-    //     'Relatively Low (55K - 932K)',
-    //     'Relatively Moderate (932K - 5.96M)',
-    //     'Relatively High (5.96M - 29.4M)',
-    //     'Very High (>29.4M)'
-    //   ];
-    //   return d3
-    //     .scaleOrdinal(d3.schemeOrRd[5])
-    //     .domain(categories);
-    // }
-
-    // const extent = d3.extent(values) as [number, number];
-    // return d3.scaleSequential(d3.interpolateOrRd).domain(extent);
   }, [data, valueField]);
 
   // Function to style each county
@@ -202,7 +190,7 @@ const Map = () => {
         />
       )}
 
-      <Legend />
+      <Legend rating={rating_legend} />
       <CountyInfoModal />
     </MapContainer>
   );

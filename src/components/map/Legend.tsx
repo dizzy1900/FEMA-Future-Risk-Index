@@ -3,8 +3,14 @@ import { useEffect } from "react";
 import * as d3 from "d3";
 import L from "leaflet";
 import { useIsMobile } from "@/lib/utils";
+import { Rating } from "@/schema/risk";
 
-const Legend = () => {
+
+type LegendProps = {
+  rating: Rating;
+};
+
+const Legend: React.FC<LegendProps> = ({ rating }) => {
   const map = useMap(); // Get the Leaflet map instance
   const isMobile = useIsMobile();
 
@@ -21,19 +27,35 @@ const Legend = () => {
       const numColors = 5; // Use only  segments from d3.interpolateOrRd
       const colorScale = d3.interpolateOrRd; // d3 color interpolation
 
-      // Define category labels
-      const categoryLabels = [
-        "Not Applicable",
-        "No Rating",
-        "Very Low",
-        "Relatively Low",
-        "Relatively Moderate",
-        "Relatively High",
-        "Very High",
-      ];
 
-      // Generate color values for 5 categories
-      const thresholds = [0.0, 0.1, 0.25, 0.45, 0.70, 0.9]
+      // Define category labels
+      let categoryLabels: string[];
+      if (rating === Rating.PALR) {
+        categoryLabels = [
+              'Not Applicable',
+              'No Rating',       
+              'Very Low (<55K)',
+              'Relatively Low (55K - 932K)',
+              'Relatively Moderate (932K - 5.96M)',
+              'Relatively High (5.96M - 29.4M)',
+              'Very High (>29.4M)'
+            ]
+          } else {
+            categoryLabels = [
+              'Not Applicable',
+              'No Rating',
+              'Very Low',
+              'Relatively Low',
+              'Relatively Moderate',
+              'Relatively High',
+              'Very High',
+            ]
+          }
+
+      const categories = categoryLabels.slice(-5)
+      
+      // Generate numerical thresholds
+      const thresholds = categories.map((_, i) => (i / (categories.length - 1)) * 0.9);
 
       // Style the legend container with a white background
       div.style.background = "#FFFFFF";
@@ -65,9 +87,9 @@ const Legend = () => {
       );
 
       // Generate the rest using d3 color scale
-      for (let i = 1; i <= numColors; i++) {
+      for (let i = 0; i <= (numColors - 1); i++) {
         const color = colorScale(thresholds[i]);
-        const label = categoryLabels[i + 1]; // Shift labels to match colors
+        const label = categoryLabels[i + 2]; // Shift labels to match colors
 
         labels.push(
           `<div style="display: flex; align-items: center; margin-bottom: 4px;">
