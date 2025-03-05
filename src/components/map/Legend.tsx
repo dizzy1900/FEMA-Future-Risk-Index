@@ -3,14 +3,15 @@ import { useEffect } from "react";
 import * as d3 from "d3";
 import L from "leaflet";
 import { useIsMobile } from "@/lib/utils";
-import { Rating } from "@/schema/risk";
+import { Rating, Hazard } from "@/schema/risk";
 
 
 type LegendProps = {
-  rating: Rating;
+  rating: Rating,
+  hazard: Hazard,
 };
 
-const Legend: React.FC<LegendProps> = ({ rating }) => {
+const Legend: React.FC<LegendProps> = ({ rating, hazard}) => {
   const map = useMap(); // Get the Leaflet map instance
   const isMobile = useIsMobile();
 
@@ -31,15 +32,56 @@ const Legend: React.FC<LegendProps> = ({ rating }) => {
       // Define category labels
       let categoryLabels: string[];
       if (rating === Rating.PALR) {
-        categoryLabels = [
+          if (hazard === Hazard.DRGT) {
+            categoryLabels = [
               'Not Applicable',
-              'No Rating',       
+              'No Rating',
+              'Very Low (<21.9K)', 
+              'Relatively Low (21.9K - 292K)',
+              'Relatively Moderate (292K - 2.74M)',
+              'Relatively High (2.74M - 25.1M)',
+              'Very High (>25.1M)',
+            ]
+          } else if (hazard === Hazard.CFLD) {
+            categoryLabels = [
+              'Not Applicable',
+              'No Rating',
               'Very Low (<55K)',
               'Relatively Low (55K - 932K)',
               'Relatively Moderate (932K - 5.96M)',
               'Relatively High (5.96M - 29.4M)',
               'Very High (>29.4M)'
             ]
+        } else if (hazard === Hazard.EXHT){
+          categoryLabels = [
+            'Not Applicable',
+            'No Rating',
+            'Very Low (<10.9K)',
+            'Relatively Low (10.9K - 241K)',
+            'Relatively Moderate (241K - 1.87M)',
+            'Relatively High (1.87M - 17.3M)', 
+            'Very High (>17.3M)',
+          ]
+        } else if (hazard === Hazard.HRCN){
+          categoryLabels = [
+            'Not Applicable',
+            'No Rating',
+            'Very Low (<625K)',
+            'Relatively Low (625K - 7.36M)', 
+            'Relatively Moderate (7.36M - 43M)',
+            'Relatively High (43M - 191M)',
+            'Very High (>191M)',
+          ]
+        } else if (hazard === Hazard.WFIR) {
+          categoryLabels = [
+            'Not Applicable',
+            'No Rating',
+            'Very Low (<85.9K)',
+            'Relatively Low (85.9K - 842K)',
+            'Relatively Moderate (842K - 5.88M)',
+            'Relatively High (5.88M - 49.5M)',
+            'Very High (>49.5M)',
+          ]
           } else {
             categoryLabels = [
               'Not Applicable',
@@ -51,6 +93,17 @@ const Legend: React.FC<LegendProps> = ({ rating }) => {
               'Very High',
             ]
           }
+        } else {
+          categoryLabels = [
+            'Not Applicable',
+            'No Rating',
+            'Very Low (<21.9K)', 
+            'Relatively Low (21.9K - 292K)',
+            'Relatively Moderate (292K - 2.74M)',
+            'Relatively High (2.74M - 25.1M)',
+            'Very High (>25.1M)',
+          ]
+        }
 
       const categories = categoryLabels.slice(-5)
       
@@ -108,7 +161,7 @@ const Legend: React.FC<LegendProps> = ({ rating }) => {
     return () => {
       map.removeControl(legend);
     };
-  }, [map, rating]);
+  }, [map, rating, hazard]);
 
   return null;
 };

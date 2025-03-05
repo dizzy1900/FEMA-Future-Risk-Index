@@ -80,7 +80,6 @@ const Map = () => {
   const [hoveredCounty, setHoveredCounty] = useState<string | undefined>();
   const { setSelectedCounty } = useCountyStore();
   const { rating, hazard, scenario, datasource } = useFiltersStore();
-  const rating_legend = useFiltersStore((state) => state.rating);
 
   const { data } = useCounties();
 
@@ -225,7 +224,7 @@ const Map = () => {
         />
       )}
 
-      <Legend rating={rating_legend} />
+      <Legend rating={rating} hazard={hazard} />
       <CountyInfoModal />
     </MapContainer>
   );
