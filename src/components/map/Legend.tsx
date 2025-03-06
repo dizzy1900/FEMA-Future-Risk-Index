@@ -40,6 +40,8 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale}) => {
   useEffect(() => {
     if (!map) return;
 
+    console.log("Legend Re-Rendered:", { rating, hazard, colorScale });
+
     const legend = new L.Control({
       position: isMobile ? "bottomright" : "topleft",
     });
@@ -168,7 +170,7 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale}) => {
     return () => {
       map.removeControl(legend);
     };
-  }, [map, rating, hazard]);
+  }, [map, rating, hazard, colorScale]);
 
   return null;
 };
