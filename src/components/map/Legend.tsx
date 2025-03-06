@@ -1,3 +1,5 @@
+console.log("Legend Component Mounted");
+
 import { useMap } from "react-leaflet";
 import { useEffect } from "react";
 import * as d3 from "d3";
