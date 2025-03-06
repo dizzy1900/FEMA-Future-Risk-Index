@@ -38,9 +38,11 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale}) => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    console.log("1. Legend Re-Rendered:", { rating, hazard, colorScale });
+
     if (!map) return;
 
-    console.log("Legend Re-Rendered:", { rating, hazard, colorScale });
+    console.log("2. Legend Re-Rendered:", { rating, hazard, colorScale });
 
     const legend = new L.Control({
       position: isMobile ? "bottomright" : "topleft",
