@@ -131,7 +131,7 @@ const Map = () => {
         'Relatively High (43M - 191M)',
         'Very High (>191M)',
       ]
-    } else if (hazard === Hazard.WFIR){
+    } else if (hazard === Hazard.WFIR) {
       categories = [
         'Very Low (<85.9K)',
         'Relatively Low (85.9K - 842K)', 'No Rating',
@@ -139,7 +139,10 @@ const Map = () => {
         'Relatively High (5.88M - 49.5M)',
         'Very High (>49.5M)',
       ]
+    } else {
+      throw new Error(`Unexpected hazard type: ${hazard}`);
     }
+
       return d3
         .scaleOrdinal(d3.schemeOrRd[categories.length])
         .domain(categories);
@@ -224,7 +227,7 @@ const Map = () => {
         />
       )}
 
-      <Legend key={`${rating}-${hazard}`} rating={rating} hazard={hazard} colorScale={colorScale} />
+      <Legend rating={rating} hazard={hazard} colorScale={colorScale} />
       <CountyInfoModal />
     </MapContainer>
   );

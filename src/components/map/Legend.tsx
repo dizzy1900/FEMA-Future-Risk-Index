@@ -1,5 +1,3 @@
-console.log("Legend Component Mounted");
-
 import { useMap } from "react-leaflet";
 import { useEffect } from "react";
 import * as d3 from "d3";
@@ -15,7 +13,7 @@ type LegendProps = {
 };
 
 const generateSequentialColors = (
-  colorScale: d3.ScaleSequential<string, never> | d3.ScaleOrdinal<string, string, never>,
+  colorScale: d3.ScaleSequential<string, never>,
   steps: number
 ) => {
   const [min, max] = colorScale.domain(); 
@@ -27,7 +25,7 @@ const generateSequentialColors = (
 };
 
 const generateOrdinalColors = (
-  colorScale: d3.ScaleSequential<string, never> | d3.ScaleOrdinal<string, string, never>,
+  colorScale: d3.ScaleOrdinal<string, string, never>,
   categories: string[],
 ) => {
   return Array.from({ length: categories.length }, (_, i) => {
@@ -40,11 +38,7 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale}) => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    console.log("1. Legend Re-Rendered:", { rating, hazard, colorScale });
-
     if (!map) return;
-
-    console.log("2. Legend Re-Rendered:", { rating, hazard, colorScale });
 
     const legend = new L.Control({
       position: isMobile ? "bottomright" : "topleft",
@@ -108,10 +102,12 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale}) => {
             'Relatively High (5.88M - 49.5M)',
             'Very High (>49.5M)',
           ]
-          } 
-          colors = generateOrdinalColors(colorScale, categoryLabels.slice(-5))
+          } else {
+            throw new Error(`Unexpected hazard type: ${hazard}`);
+          }
+          colors = generateOrdinalColors(colorScale as d3.ScaleOrdinal<string, string, never>, categoryLabels.slice(-5))
         } else {
-          colors = generateSequentialColors(colorScale, 5)
+          colors = generateSequentialColors(colorScale as d3.ScaleSequential<string, never>, 5)
           categoryLabels = [
             'Not Applicable',
             'No Rating',
