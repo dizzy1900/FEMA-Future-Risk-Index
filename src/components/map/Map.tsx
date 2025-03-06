@@ -224,7 +224,7 @@ const Map = () => {
         />
       )}
 
-      <Legend rating={rating} hazard={hazard} colorScale={colorScale} />
+      <Legend key={`${rating}-${hazard}`} rating={rating} hazard={hazard} colorScale={colorScale} />
       <CountyInfoModal />
     </MapContainer>
   );
