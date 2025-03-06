@@ -146,7 +146,7 @@ const Map = () => {
     }
     const extent = d3.extent(values) as [number, number];
     return d3.scaleSequential(d3.interpolateOrRd).domain(extent);
-  }, [data, valueField]);
+  }, [data, valueField, rating, hazard]);
 
   // Function to style each county
   const countyStyle = (feature?: Feature<Geometry, CountyProperties>) => {
