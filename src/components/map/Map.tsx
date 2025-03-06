@@ -224,7 +224,7 @@ const Map = () => {
         />
       )}
 
-      <Legend rating={rating} hazard={hazard} />
+      <Legend rating={rating} hazard={hazard} colorScale={colorScale} />
       <CountyInfoModal />
     </MapContainer>
   );

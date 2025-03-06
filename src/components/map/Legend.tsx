@@ -9,9 +9,31 @@ import { Rating, Hazard } from "@/schema/risk";
 type LegendProps = {
   rating: Rating,
   hazard: Hazard,
+  colorScale: d3.ScaleSequential<string, never> | d3.ScaleOrdinal<string, string, never>, 
 };
 
-const Legend: React.FC<LegendProps> = ({ rating, hazard}) => {
+const generateSequentialColors = (
+  colorScale: d3.ScaleSequential<string, never> | d3.ScaleOrdinal<string, string, never>,
+  steps: number
+) => {
+  const [min, max] = colorScale.domain(); 
+  const stepSize = (max - min) / (steps - 1);
+  return Array.from({ length: steps }, (_, i) => {
+    const value = min + i * stepSize; 
+    return { value, color: colorScale(value)};
+  });
+};
+
+const generateOrdinalColors = (
+  colorScale: d3.ScaleSequential<string, never> | d3.ScaleOrdinal<string, string, never>,
+  categories: string[],
+) => {
+  return Array.from({ length: categories.length }, (_, i) => {
+    return { value: categories[i], color: colorScale(categories[i]) }; // Map to color
+  });
+};
+
+const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale}) => {
   const map = useMap(); // Get the Leaflet map instance
   const isMobile = useIsMobile();
 
@@ -25,9 +47,7 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard}) => {
     legend.onAdd = function () {
       const div = L.DomUtil.create("div", "info legend");
 
-      const numColors = 5; // Use only  segments from d3.interpolateOrRd
-      const colorScale = d3.interpolateOrRd; // d3 color interpolation
-
+      let colors: {value: any, color: string}[]
 
       // Define category labels
       let categoryLabels: string[];
@@ -82,33 +102,20 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard}) => {
             'Relatively High (5.88M - 49.5M)',
             'Very High (>49.5M)',
           ]
-          } else {
-            categoryLabels = [
-              'Not Applicable',
-              'No Rating',
-              'Very Low',
-              'Relatively Low',
-              'Relatively Moderate',
-              'Relatively High',
-              'Very High',
-            ]
-          }
+          } 
+          colors = generateOrdinalColors(colorScale, categoryLabels.slice(-5))
         } else {
+          colors = generateSequentialColors(colorScale, 5)
           categoryLabels = [
             'Not Applicable',
             'No Rating',
-            'Very Low (<21.9K)', 
-            'Relatively Low (21.9K - 292K)',
-            'Relatively Moderate (292K - 2.74M)',
-            'Relatively High (2.74M - 25.1M)',
-            'Very High (>25.1M)',
+            'Very Low', 
+            'Relatively Low' ,
+            'Relatively Moderate',
+            'Relatively High',
+            'Very High',
           ]
-        }
-
-      const categories = categoryLabels.slice(-5)
-      
-      // Generate numerical thresholds
-      const thresholds = categories.map((_, i) => (i / (categories.length - 1)) * 0.9);
+        }      
 
       // Style the legend container with a white background
       div.style.background = "#FFFFFF";
@@ -140,8 +147,8 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard}) => {
       );
 
       // Generate the rest using d3 color scale
-      for (let i = 0; i <= (numColors - 1); i++) {
-        const color = colorScale(thresholds[i]);
+      for (let i = 0; i <= (colors.length - 1); i++) {
+        const color: string = colors[i].color;
         const label = categoryLabels[i + 2]; // Shift labels to match colors
 
         labels.push(
