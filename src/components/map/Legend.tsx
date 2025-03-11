@@ -49,7 +49,7 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale }) => {
       const div = L.DomUtil.create("div", "info legend");
 
       if (isMobile) {
-        div.style.marginBottom = `calc(env(safe-area-inset-bottom) + 16px)`;
+        div.style.marginBottom = `calc(env(safe-area-inset-bottom) + 32px)`;
       }
 
       let colors: { value: any; color: string }[];
