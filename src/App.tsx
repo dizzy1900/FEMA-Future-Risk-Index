@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen w-full max-h-screen">
-      <div className="absolute inset-0 z-0 h-[calc(100vh-env(safe-area-inset-bottom))] w-full">
+      <div className="absolute inset-0 z-0 h-screen w-full">
         <Map />
       </div>
 

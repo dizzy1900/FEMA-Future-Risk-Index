@@ -48,6 +48,10 @@ const Legend: React.FC<LegendProps> = ({ rating, hazard, colorScale }) => {
     legend.onAdd = function () {
       const div = L.DomUtil.create("div", "info legend");
 
+      if (isMobile) {
+        div.style.marginBottom = "env(safe-area-inset-bottom)";
+      }
+
       let colors: { value: any; color: string }[];
 
       // Define category labels
