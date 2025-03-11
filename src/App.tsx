@@ -51,7 +51,7 @@ export default function Home() {
   }, [hazard, rating, datasource]);
 
   return (
-    <>
+    <div className="flex flex-col h-screen w-full max-h-screen">
       <div className="absolute inset-0 z-0 h-screen w-full">
         <Map />
       </div>
@@ -95,6 +95,6 @@ export default function Home() {
 
         <Info />
       </div>
-    </>
+    </div>
   );
 }
