@@ -83,6 +83,10 @@ body {
   min-height: 100vh;
 } */
 
+body {
+  min-height: -webkit-fill-available;
+}
+
 /* h1 {
   font-size: 3.2em;
   line-height: 1.1;
