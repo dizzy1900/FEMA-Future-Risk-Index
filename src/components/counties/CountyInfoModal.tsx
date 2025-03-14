@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Datasource, Hazard, Scenario } from "@/schema/risk";
 import { useCountyStore } from "@/state/county";
 import { useFiltersStore } from "@/state/filters";
+import { Button } from "@/components/ui/button";
 
 // interface CountyInfoModalProps {
 //   selectedCounty: CountyProperties | undefined;
@@ -178,6 +179,12 @@ const CountyInfoModal = () => {
               </TableRow>
             </TableBody>
           </Table>
+
+          <Button className="mt-4">
+            <a href="https://habitual-dresser-4c4.notion.site/1b66fd9b85ac80469619f664f9440b86">
+              Get Notified When The Data Changes
+            </a>
+          </Button>
         </DialogHeader>
       </DialogContent>
     </Dialog>
