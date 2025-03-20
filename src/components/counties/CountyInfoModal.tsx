@@ -11,6 +11,7 @@ import { Datasource, Hazard, Scenario } from "@/schema/risk";
 import { useCountyStore } from "@/state/county";
 import { useFiltersStore } from "@/state/filters";
 import { Button } from "@/components/ui/button";
+import { AlertTriangle } from "lucide-react";
 
 // interface CountyInfoModalProps {
 //   selectedCounty: CountyProperties | undefined;
@@ -181,7 +182,11 @@ const CountyInfoModal = () => {
           </Table>
 
           <Button className="mt-4">
-            <a href="https://habitual-dresser-4c4.notion.site/1b66fd9b85ac80469619f664f9440b86">
+            <a
+              href="https://habitual-dresser-4c4.notion.site/1b66fd9b85ac80469619f664f9440b86"
+              className="w-full flex items-center justify-center"
+            >
+              <AlertTriangle className="w-4 h-4 mr-2" />
               Get Notified When The Data Changes
             </a>
           </Button>
