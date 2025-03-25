@@ -14,7 +14,7 @@ interface FiltersState {
 
 export const useFiltersStore = create<FiltersState>((set) => ({
   rating: Rating.PRISK,
-  hazard: Hazard.CFLD,
+  hazard: Hazard.WFIR,
   scenario: Scenario.MID_LOWER,
   datasource: Datasource.L95,
   setRating: (rating) => set({ rating }),
